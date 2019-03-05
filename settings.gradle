@@ -1,5 +1,2 @@
 rootProject.name = 'resolver-demo'
 
-include 'domain'
-include 'resolver'
-
