@@ -6,6 +6,7 @@ import com.appdirect.demo.functions.domain.bo.ResolvedEvent;
 import com.appdirect.demo.functions.resolver.ResolverManager;
 import java.io.InputStream;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +14,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 @SpringBootApplication
-public class ResolverFunction implements Function<RawEvent, ResolvedEvent> {
+public class ResolverFunction implements Function<RawEvent, Stream<ResolvedEvent>> {
 
   private ResolverManager resolverManager;
   private final FieldResolverConfig resolverConfig;
@@ -27,9 +28,9 @@ public class ResolverFunction implements Function<RawEvent, ResolvedEvent> {
 
 
   @Override
-  public ResolvedEvent apply(RawEvent rawEvent) {
+  public Stream<ResolvedEvent> apply(RawEvent rawEvent) {
 
-    return ResolvedEvent.builder()
+    ResolvedEvent e1 = ResolvedEvent.builder()
         .eventId(
             resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_event_id"))
         )
@@ -49,6 +50,29 @@ public class ResolverFunction implements Function<RawEvent, ResolvedEvent> {
             resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_total_price"))
         )
         .build();
+
+    return Stream.of(e1, e1, e1);
+
+//    return ResolvedEvent.builder()
+//        .eventId(
+//            resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_event_id"))
+//        )
+//        .eventDateTime(
+//            resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_event_date_time"))
+//        )
+//        .userId(
+//            resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_user_id"))
+//        )
+//        .productId(
+//            resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_product_id"))
+//        )
+//        .quantity(
+//            resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_quantity"))
+//        )
+//        .totalPrice(
+//            resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_total_price"))
+//        )
+//        .build();
   }
 
   //......##### internal #####......//
