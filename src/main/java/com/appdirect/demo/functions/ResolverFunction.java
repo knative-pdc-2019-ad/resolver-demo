@@ -1,11 +1,15 @@
 package com.appdirect.demo.functions;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import com.appdirect.demo.functions.domain.bo.FieldResolverConfig;
 import com.appdirect.demo.functions.domain.bo.RawEvent;
 import com.appdirect.demo.functions.domain.bo.ResolvedEvent;
 import com.appdirect.demo.functions.resolver.ResolverManager;
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.function.Function;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,9 +19,10 @@ import org.yaml.snakeyaml.constructor.Constructor;
 @SpringBootApplication
 public class ResolverFunction implements Function<RawEvent, ResolvedEvent> {
 
+  private static final Logger LOGGER = getLogger(MethodHandles.lookup().lookupClass());
+
   private ResolverManager resolverManager;
   private final FieldResolverConfig resolverConfig;
-
 
   @Autowired
   public ResolverFunction(ResolverManager resolverManager) {
@@ -25,9 +30,10 @@ public class ResolverFunction implements Function<RawEvent, ResolvedEvent> {
     this.resolverConfig = resolverConfig();
   }
 
-
   @Override
   public ResolvedEvent apply(RawEvent rawEvent) {
+
+    LOGGER.info("Received: {}", rawEvent);
 
     return ResolvedEvent.builder()
         .eventId(
@@ -58,28 +64,6 @@ public class ResolverFunction implements Function<RawEvent, ResolvedEvent> {
     Yaml yaml = new Yaml(new Constructor(FieldResolverConfig.class));
     return yaml.load(is);
   }
-
-//  public static void main(String[] args) {
-//    ResolverManager m = new ResolverManager();
-//    ResolverFunction f = new ResolverFunction(m);
-//
-//    Map<String, String> fields = new HashMap<>();
-//    fields.put("event_date_time", String.valueOf(Instant.now().toEpochMilli()));
-//    fields.put("user_id", UUID.randomUUID().toString());
-//    fields.put("product_id", UUID.randomUUID().toString());
-//    fields.put("quantity", "25");
-//    fields.put("unit_price", "1.35");
-//
-//    RawEvent ev = RawEvent.builder()
-//        .referenceId(UUID.randomUUID().toString())
-//        .processingTimeMillis(12345566L)
-//        .fields(fields)
-//        .build();
-//
-//    System.out.println(f.resolverConfig());
-//
-//    System.out.println(f.apply(ev));
-//  }
 
   public static void main(String[] args) {
     SpringApplication.run(ResolverFunction.class, args);

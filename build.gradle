@@ -1,7 +1,6 @@
 buildscript {
     ext {
         lombokVer = '1.18.2'
-        csvMapperVer = '6.0.10'
     }
     
     repositories {
@@ -16,6 +15,7 @@ plugins {
     id 'idea'
     id "net.ltgt.apt" version "0.14"
     id "org.springframework.boot" version "2.1.2.RELEASE" apply false
+    id 'com.google.cloud.tools.jib' version '0.9.10'
 }
 
 group 'com.appdirect.experimental'
