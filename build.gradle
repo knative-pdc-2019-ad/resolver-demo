@@ -1,6 +1,7 @@
 buildscript {
     ext {
         lombokVer = '1.18.2'
+        springCloudBom = 'Greenwich.RELEASE'
     }
     
     repositories {
@@ -39,6 +40,7 @@ repositories {
 
 dependencyManagement {
     imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudBom"
         mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
     }
 }
@@ -47,5 +49,6 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVer"
     annotationProcessor "org.projectlombok:lombok:$lombokVer"
 
-    compile "org.springframework.boot:spring-boot-starter"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.cloud:spring-cloud-function-web"
 }

@@ -9,7 +9,7 @@ spec:
       revisionTemplate:
         spec:
           container:
-            image: skylab00/resolver:v01
+            image: skylab00/resolver:v06
           timeoutSeconds: 600
 
 ---
@@ -30,6 +30,6 @@ spec:
       name: resolver
   reply:
     channel:
-    apiVersion: eventing.knative.dev/v1alpha1
-    kind: Channel
-    name: resolved
+      apiVersion: eventing.knative.dev/v1alpha1
+      kind: Channel
+      name: resolved
