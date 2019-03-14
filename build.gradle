@@ -20,7 +20,7 @@ plugins {
 }
 
 group 'com.appdirect.experimental'
-version '0.0.1-SNAPSHOT'
+version '0.0.1'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -51,4 +51,11 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.cloud:spring-cloud-function-web"
+}
+
+jib {
+    to {
+        image = "gcr.io/pdc-19/resolver:${project.version}"
+        credHelper = 'gcr'
+    }
 }
