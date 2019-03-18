@@ -56,7 +56,7 @@ public class ResolverFunction {
               resolverManager.apply(rawEvent, resolverConfig.getFields().get("f_total_price"))
           )
           .build();
-      
+
       LOGGER.info("Resolved: {}", resolved);
       return resolved;
     };
